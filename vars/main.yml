@@ -1,0 +1,40 @@
+---
+# vars file for ansible-role-server-app
+
+nginx_vhosts:
+  - listen: "80 default_server"
+    server_name: "{{ app_domain }}"
+    root: "{{ doc_root }}"
+    index: "index.php index.html index.htm"
+    extra_parameters: "{{ app_nginx_vhosts_extra_params }}"
+apache_vhosts:
+      - servername: "{{ app_domain }}"
+        documentroot: "{{ doc_root }}"
+        extra_parameters: |
+              ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ doc_root }}"
+php_enablerepo: "remi-php70"
+php_enable_php_fpm: true
+php_webserver_daemon: "{% if use_nginx == 'yes' %}nginx{% else %}httpd{% endif %}"
+php_date_timezone: "{{ app_php_date_timezone }}"
+php_packages:
+  - php
+  - php-cli
+  - php-common
+  - php-devel
+  - php-fpm
+  - php-gd
+  - php-imap
+  - php-intl
+  - php-json
+  - php-ldap
+  - php-mbstring
+  - php-mcrypt
+  - php-mysqlnd
+  - php-opcache
+  - php-pdo
+  - php-pear
+  - php-pecl-apcu
+  - php-pecl-imagick
+  - php-soap
+  - php-xml
+  - php-xmlrpc
